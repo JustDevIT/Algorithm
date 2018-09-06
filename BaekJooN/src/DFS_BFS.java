@@ -11,7 +11,7 @@ public class DFS_BFS {
 	static void dfs(int c) {
 		// 1 2
 		// 2 4
-		
+		 
 		visited[c] = true;
 		System.out.print(c) ;
 		
