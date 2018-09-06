@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Main {
 
 	static int[][][] dp= new int[101][100][2];
-
+ 
 		
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
