@@ -2,18 +2,27 @@ import java.io.FileInputStream;
 import java.util.Scanner;
 
 public class Main {
-	
-	static void tile1(int n) {
-		long[] k = new long[1000000];
+	static int[][] K = new int[2000][3];
 		
-		k[0] = k[1] = 1;
+	static void rgb(int n) {
+		long[][] rgb = new long[2000][3];
+		long[] s = new long[2000];
+		
+		rgb[1][0] = K[1][0];
+		rgb[1][1] = K[1][1];
+		rgb[1][2] = K[1][2];
+			
 		
 		for(int i = 2; i<=n; i++) {
-			k[i] = k[i-2] + k[i-1];
-			k[i] %= 15746;
+			rgb[i][0] = Math.min(rgb[i-1][1] + K[i][0], rgb[i-1][2] + K[i][0]);
+			rgb[i][1] = Math.min(rgb[i-1][0] + K[i][1], rgb[i-1][2] + K[i][1]);
+			rgb[i][2] = Math.min(rgb[i-1][0] + K[i][2], rgb[i-1][1] + K[i][2]);
+			
+			s[i] = Math.min(rgb[i][0], rgb[i][1]);
+			s[i] = Math.min(s[i], rgb[i][2]);
 		}
 		
-		System.out.print(k[n]);
+		System.out.print(s[n]);
 		
 	}
 	
@@ -26,7 +35,13 @@ public class Main {
 		
 		int n = sc.nextInt();
 		
-		tile1(n);
+		for(int i=1; i<=n; i++) {
+				K[i][0] = sc.nextInt();
+				K[i][1] = sc.nextInt();
+				K[i][2] = sc.nextInt();
+		}
+		
+		rgb(n);
 		
 	}
 	
