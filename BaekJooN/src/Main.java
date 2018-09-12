@@ -2,47 +2,37 @@ import java.io.FileInputStream;
 import java.util.Scanner;
 
 public class Main {
-	static int[][] K = new int[2000][3];
+
+	static void tile2n(int n) {
+		long[] k = new long[1001];
+		long[][] map = new long[1001][3];
 		
-	static void rgb(int n) {
-		long[][] rgb = new long[2000][3];
-		long[] s = new long[2000];
+		map[0][2] = 1;
+		map[1][1] = 1;
 		
-		rgb[1][0] = K[1][0];
-		rgb[1][1] = K[1][1];
-		rgb[1][2] = K[1][2];
+		map[2][1] = 1;
+		map[2][2] = 1;
+		
+		k[1] = 1 % 10007;
+		
+		for(int i = 2; i<=n;i++) {
+			map[i][1] = (map[i-1][1] + map[i-1][2]) % 10007;
+			map[i][2] = (map[i-2][1]+map[i-2][2]) % 10007;
 			
-		
-		for(int i = 2; i<=n; i++) {
-			rgb[i][0] = Math.min(rgb[i-1][1] + K[i][0], rgb[i-1][2] + K[i][0]);
-			rgb[i][1] = Math.min(rgb[i-1][0] + K[i][1], rgb[i-1][2] + K[i][1]);
-			rgb[i][2] = Math.min(rgb[i-1][0] + K[i][2], rgb[i-1][1] + K[i][2]);
-			
-			s[i] = Math.min(rgb[i][0], rgb[i][1]);
-			s[i] = Math.min(s[i], rgb[i][2]);
+			k[i] = (map[i][1] + map[i][2]) % 10007;  
 		}
 		
-		System.out.print(s[n]);
-		
+		System.out.println(k[n]);
 	}
-	
 		
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
-		
 		System.setIn(new FileInputStream("D://Project/Algorithm/Algorithm/BaekJooN/TestCase/Sample.txt"));
 		Scanner sc = new Scanner(System.in);
 		
 		int n = sc.nextInt();
 		
-		for(int i=1; i<=n; i++) {
-				K[i][0] = sc.nextInt();
-				K[i][1] = sc.nextInt();
-				K[i][2] = sc.nextInt();
-		}
-		
-		rgb(n);
-		
+		tile2n(n);
 	}
 	
 
