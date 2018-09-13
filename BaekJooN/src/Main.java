@@ -1,30 +1,22 @@
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class Main {
-
-	static void tile2n(int n) {
-		long[] k = new long[1001];
-		long[][] map = new long[1001][3];
+	
+	static LinkedList<Integer> ls[] = new LinkedList[2001];
+	static LinkedList<Integer> color = new LinkedList();
+	static int[] vv = new int[2001];  
+	
+	static void arrow() {
 		
-		map[0][2] = 1;
-		map[1][1] = 1;
-		
-		map[2][1] = 1;
-		map[2][2] = 1;
-		
-		k[1] = 1 % 10007;
-		
-		for(int i = 2; i<=n;i++) {
-			map[i][1] = (map[i-1][1] + map[i-1][2]) % 10007;
-			map[i][2] = (map[i-2][1]+map[i-2][2]) % 10007;
-			
-			k[i] = (map[i][1] + map[i][2]) % 10007;  
-		}
-		
-		System.out.println(k[n]);
 	}
-		
+	
+	
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		System.setIn(new FileInputStream("D://Project/Algorithm/Algorithm/BaekJooN/TestCase/Sample.txt"));
@@ -32,9 +24,32 @@ public class Main {
 		
 		int n = sc.nextInt();
 		
-		tile2n(n);
+		
+		for(int i =0; i<n; i++) {
+			int s = sc.nextInt();
+			int v = sc.nextInt();
+			
+			if(ls[v]==null) {
+				ls[v] = new LinkedList();
+			}
+			
+			ls[v].add(s);
+			
+			Collections.sort(ls[v]);
+			
+			if(vv[v] != 1)
+			{
+				color.add(v);
+				
+				vv[v] = 1;
+			}
+			
+			
+			
+		}
+		
+		arrow();
+		
 	}
-	
-
 }
 
