@@ -1,68 +1,63 @@
 import java.io.FileInputStream;
-import java.util.Collections;
 import java.util.Scanner;
-import java.util.Vector;
 
 public class Main {
-	
+
+	static int n, m;
 	static int[][] map, k;
 	
-	// left, right, up, down
-	static int[] dx = {-1, 1, 0, 0};
-	static int[] dy = {0, 0, -1, 1};
-	static int n, m;
+	static int[] nx = {-1, 0};
+	static int[] ny = {0, -1};
 	
-	static int Kudarizaka(int x, int y) {
+	static void candy() {
 		
-		System.out.print(map[y][x] + " ");
-		
-		if(y == m-2 && x == n-2) {
-			return 1;
-		}
-		
-		
-		if(k[y][x] == 0) {
-			for(int i=0;i<4;i++) {
+		for(int i =1; i<=n; i++) {
+			for(int j =1; j<=m; j++) {
 				
-				int nx = x + dx[i];
-				int ny = y + dy[i];
-				
-				if(map[ny][nx] < map[y][x] && map[ny][nx] > 0 ) {
-					k[y][x] += Kudarizaka(nx, ny);
+				if(i==1 && j==1) {
+					k[i][j] = map[i][j];
+					continue;
 				}
+				
+				if(i==1) {
+					// 왼쪽에서만 들어오는 값
+					k[i][j] = k[i+ny[0]][j+nx[0]] + map[i][j]; 
+				} else if(j==m && i==1 && i!=n || j == 1) {
+					// 위에서만 들어오는 값 
+					k[i][j] = k[i+ny[1]][j+nx[1]] + map[i][j]; 
+				} else {
+					// 왼쪽, 위쪽에서 들어오는 값
+					k[i][j] = Math.max(k[i+ny[0]][j+nx[0]] + map[i][j], k[i+ny[1]][j+nx[1]] + map[i][j]);
+					
+				}
+				
 			}
 		}
 		
-		return k[y][x];
+		System.out.println(k[n][m]);
 		
 	}
 	
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		
-		//System.setIn(new FileInputStream("D://Project/Algorithm/Algorithm/BaekJooN/TestCase/Sample.txt"));
-		System.setIn(new FileInputStream("C://Users//영훈//git//Algorithm//BaekJooN//TestCase//Sample.txt"));
+		System.setIn(new FileInputStream("D://Project/Algorithm/Algorithm/BaekJooN/TestCase/Sample.txt"));
+		//System.setIn(new FileInputStream("C://Users//영훈//git//Algorithm//BaekJooN//TestCase//Sample.txt"));
 		Scanner sc = new Scanner(System.in);
-		
-		m = sc.nextInt() + 2;
-		n = sc.nextInt() + 2;
-		
-		map = new int[m][n];
-		k = new int[m][n];
-		
-		for(int i=0; i<m;i++) {
-			for(int j=0; j<n;j++) {
 				
-				if(i==0 || i==(m-1) || j==0 || j==(n-1)) {
-					map[i][j] = -1;
-				}else {
-					map[i][j] = sc.nextInt();	
-				}
+		n = sc.nextInt();
+		m = sc.nextInt();
+		
+		map = new int[n+1][m+1];
+		k = new int[n+1][m+1];
+		
+		for(int i=1;i<=n;i++) {
+			for(int j=1;j<=m;j++) {
+				map[i][j] = sc.nextInt();
 			}
 		}
 		
-		Kudarizaka(1, 1);
+		candy();
 		
-		System.out.println(k[1][1]);
 	}
 }
