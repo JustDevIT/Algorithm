@@ -3,40 +3,6 @@ import java.util.Scanner;
 
 public class Main {
 
-	static int n, m;
-	static int[][] map, k;
-	
-	static int[] nx = {-1, 0};
-	static int[] ny = {0, -1};
-	
-	static void candy() {
-		
-		for(int i =1; i<=n; i++) {
-			for(int j =1; j<=m; j++) {
-				
-				if(i==1 && j==1) {
-					k[i][j] = map[i][j];
-					continue;
-				}
-				
-				if(i==1) {
-					// 왼쪽에서만 들어오는 값
-					k[i][j] = k[i+ny[0]][j+nx[0]] + map[i][j]; 
-				} else if(j==m && i==1 && i!=n || j == 1) {
-					// 위에서만 들어오는 값 
-					k[i][j] = k[i+ny[1]][j+nx[1]] + map[i][j]; 
-				} else {
-					// 왼쪽, 위쪽에서 들어오는 값
-					k[i][j] = Math.max(k[i+ny[0]][j+nx[0]] + map[i][j], k[i+ny[1]][j+nx[1]] + map[i][j]);
-					
-				}
-				
-			}
-		}
-		
-		System.out.println(k[n][m]);
-		
-	}
 	
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
@@ -45,19 +11,41 @@ public class Main {
 		//System.setIn(new FileInputStream("C://Users//영훈//git//Algorithm//BaekJooN//TestCase//Sample.txt"));
 		Scanner sc = new Scanner(System.in);
 				
-		n = sc.nextInt();
-		m = sc.nextInt();
-		
-		map = new int[n+1][m+1];
-		k = new int[n+1][m+1];
-		
-		for(int i=1;i<=n;i++) {
-			for(int j=1;j<=m;j++) {
-				map[i][j] = sc.nextInt();
-			}
-		}
-		
-		candy();
+		/*
+		 * 		1 2 3 4 5 6 7
+
+				d   1    2    3    4
+				t   3    5    1    
+				p   10  20   10
+				
+				
+				k[n] = k(d-t)
+				
+				
+				V[k] = 1일
+				
+				
+				1일 -> 4, 5 ,6 ,7
+				2일 -> x
+				3일 -> 4, 5, 6, 7
+				
+				d  1      2      3
+				t  3      5      1
+				p  10     20
+				
+				n = 현 위치
+				
+				k[n] = max(k[n-1] + timetable[n-d][2]), timetable[n][2] + timetable[n-t][2]!=null)
+				
+				work[0][0] = d
+				work[0][1] = t
+				work[0][2] = p
+				
+				1
+				3
+				
+				10
+		 */
 		
 	}
 }
