@@ -18,7 +18,7 @@ public class taisha {
 	        return;
 	    }
 	    //상담을 안하는 경우
-	    dfs(day+1, sum);
+	    dfs(day+1, sum);	    
 	    
 	    //상담을 할 수 있을 경우는 상담을 한다.
 	    if(day+map[day][1] <= m+1) {
@@ -30,8 +30,8 @@ public class taisha {
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		
-		//System.setIn(new FileInputStream("D://Project/Algorithm/Algorithm/BaekJooN/TestCase/Sample.txt"));
-		System.setIn(new FileInputStream("C://Users//영훈//git//Algorithm//BaekJooN//TestCase//Sample.txt"));
+		System.setIn(new FileInputStream("D://Project/Algorithm/Algorithm/BaekJooN/TestCase/Sample.txt"));
+		//System.setIn(new FileInputStream("C://Users//영훈//git//Algorithm//BaekJooN//TestCase//Sample.txt"));
 		Scanner sc = new Scanner(System.in);
 		
 		
