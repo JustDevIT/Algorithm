@@ -1,76 +1,116 @@
 import java.io.FileInputStream;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
 public class Main {
 	
-	static int n, m;
-	static int k;
-	static int[] happy, need; 
-	static int[][] cache;
+	static int[][] map;
+	static int n;
+	static int tt;
 	
-	static int solve(int capactiy, int tonosi, int item) {
+	static void move(int c) {
 		
-		System.out.println(" 1 : " + item + " : " + capactiy + " : " + tonosi);
+		tt =3;
 		
-		if(item==k+1) {
-			return 0;
+		Queue<Integer> q = new LinkedList<Integer>();
+		
+		switch(c) {
+		
+		case 0: // up
+			for(int i=0; i<n;i++) {
+				for(int j=0; j<n;j++) {
+					if(map[j][i] != 0) {
+						q.add(map[j][i]);
+						
+						map[j][i] = 0;
+					}
+					
+					
+				}
+				
+				int idx = 0;
+				
+				while(!q.isEmpty()) {
+					int t = q.poll();
+					
+					if(map[idx][i]==0) {
+						map[idx][i] = t;
+					}else if(map[idx][i]==t) {
+						map[idx][i] *= t;
+						idx ++;
+					}else {
+						map[++idx][i] = t;
+					}
+						
+				}
+				
+			}
+			
+			break;
+		
+		case 1: // down
+			
+			break;
+			
+		case 2: // left
+			
+			break;
+			
+		case 3: //right
+			
+			break;
+		
 		}
 		
-		int ret = cache[tonosi][item];
 		
-		if(ret != -1) {
-			return ret;
-		}
 		
-		// 과목 선택 안함
-		ret = solve(capactiy, tonosi, item+1);
-		
-		cache[tonosi][item] = ret;
-		System.out.println(" 2 : " + item + " : " + capactiy + " : " + tonosi);
-		
-		// 과목 선택한 경우
-		if(capactiy <= m)
-		{
- 			ret = Math.max(ret, solve(capactiy + need[item], tonosi+happy[item], item+1));
-		}
+	}
 	
-		return ret;
+	static void dfs(int depth) {
+		
+		if(depth==5) {
+			return;
+		}
+		
+		// temp 저장
+		int tmp = tt;
+		
+		for (int i = 0; i<4; i++) {
+			move(i);
+			dfs(depth+1);
+			
+			// 초기화
+			tt = tmp;
+		}
+		
+		
+	}
+	
+	static void init() {
 		
 	}
 		
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		
-		//System.setIn(new FileInputStream("D://Project/Algorithm/Algorithm/BaekJooN/TestCase/Sample.txt"));
-		System.setIn(new FileInputStream("C://Users//영훈//git//Algorithm//BaekJooN//TestCase//Sample.txt"));
+		System.setIn(new FileInputStream("D://Project/Algorithm/Algorithm/BaekJooN/TestCase/Sample.txt"));
 		Scanner sc = new Scanner(System.in);
 		
-		
 		n = sc.nextInt();
-		m = sc.nextInt();
 		
-		k = sc.nextInt();
+		map= new int[n][n];
 		
-		cache = new int[1000][1000];
-		
-		happy = new int[1000];
-		need = new int[1000];
-				
-		
-		for(int[] t : cache) {
-			Arrays.fill(t, -1);
-		}
-		
-		for(int i=1; i<=k; i++) {
-			need[i] = sc.nextInt();
-			happy[i] = sc.nextInt();
+		for(int i=0; i< n; i++) {
+			for(int j=0; j< n; j++) {
+				map[i][j] = sc.nextInt();
+			}
 		}
 		
 		
-		System.out.println(solve(0, 0, 1));
+		dfs(1);
+		
 	}
+		
 		
 }
