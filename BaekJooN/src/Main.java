@@ -7,11 +7,9 @@ public class Main {
 	
 	static int[][] map;
 	static int n;
-	static int tt;
+	static int max;
 	
 	static void move(int c) {
-		
-		tt =3;
 		
 		Queue<Integer> q = new LinkedList<Integer>();
 		
@@ -25,8 +23,6 @@ public class Main {
 						
 						map[j][i] = 0;
 					}
-					
-					
 				}
 				
 				int idx = 0;
@@ -37,7 +33,7 @@ public class Main {
 					if(map[idx][i]==0) {
 						map[idx][i] = t;
 					}else if(map[idx][i]==t) {
-						map[idx][i] *= t;
+						map[idx][i] *= 2;
 						idx ++;
 					}else {
 						map[++idx][i] = t;
@@ -50,17 +46,96 @@ public class Main {
 			break;
 		
 		case 1: // down
-			
+			for(int i=0; i<n;i++) {
+				for(int j=n-1; j>=0;j--) {
+					if(map[j][i] != 0) {
+						q.add(map[j][i]);
+						
+						map[j][i] = 0;
+					}
+				}
+				
+				int idx = n-1;
+				
+				while(!q.isEmpty()) {
+					int t = q.poll();
+					
+					if(map[idx][i]==0) {
+						map[idx][i] = t;
+					}else if(map[idx][i]==t) {
+						map[idx][i] *= 2;
+						idx --;
+					}else {
+						map[--idx][i] = t;
+					}
+						
+				}
+				
+			}
 			break;
 			
 		case 2: // left
+			
+			for(int i=0; i<n;i++) {
+				for(int j=0; j<n;j++) {
+					if(map[i][j] != 0) {
+						q.add(map[i][j]);
+						
+						map[i][j] = 0;
+					}
+				}
+				
+				int idx = 0;
+				
+				while(!q.isEmpty()) {
+					int t = q.poll();
+					
+					if(map[i][idx]==0) {
+						map[i][idx] = t;
+					}else if(map[i][idx]==t) {
+						map[i][idx] *= 2;
+						idx++;
+					}else {
+						map[i][++idx] = t;
+					}
+						
+				}
+				
+			}
+			
 			
 			break;
 			
 		case 3: //right
 			
+			for(int i=0; i<n;i++) {
+				for(int j=n-1; j>=0;j--) {
+					if(map[i][j] != 0) {
+						q.add(map[i][j]);
+						
+						map[i][j] = 0;
+					}
+				}
+				
+				int idx = n-1;
+				
+				while(!q.isEmpty()) {
+					int t = q.poll();
+					
+					if(map[i][idx]==0) {
+						map[i][idx] = t;
+					}else if(map[i][idx]==t) {
+						map[i][idx] *= 2;
+						idx --;
+					}else {
+						map[i][--idx] = t;
+					}
+						
+				}
+				
+			}
+			
 			break;
-		
 		}
 		
 		
@@ -69,28 +144,38 @@ public class Main {
 	
 	static void dfs(int depth) {
 		
-		if(depth==5) {
+		if(depth==n+1) {
+			
+			for(int[] k : map) {
+				for(int s : k) {
+					
+					if(max < s) {
+						max = s;
+					}
+				}
+			}
+			
 			return;
 		}
 		
 		// temp 저장
-		int tmp = tt;
-		
+		int[][] temp = new int[n][n];
+
+		for(int j=0; j<n; j++) {
+			System.arraycopy(map[j], 0, temp[j], 0, map.length);
+		}
+
 		for (int i = 0; i<4; i++) {
 			move(i);
 			dfs(depth+1);
-			
-			// 초기화
-			tt = tmp;
+
+			// 값 반환
+			for(int j=0; j<n; j++) {
+				System.arraycopy(temp[j], 0, map[j], 0, map.length);
+			}
 		}
-		
-		
 	}
 	
-	static void init() {
-		
-	}
-		
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		
@@ -107,10 +192,9 @@ public class Main {
 			}
 		}
 		
-		
 		dfs(1);
+	
+		System.out.println(max);
 		
 	}
-		
-		
 }
