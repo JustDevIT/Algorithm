@@ -144,7 +144,7 @@ public class Main {
 	
 	static void dfs(int depth) {
 		
-		if(depth==n+1) {
+		if(depth==5) {
 			
 			for(int[] k : map) {
 				for(int s : k) {
@@ -161,11 +161,12 @@ public class Main {
 		// temp ÀúÀå
 		int[][] temp = new int[n][n];
 
-		for(int j=0; j<n; j++) {
-			System.arraycopy(map[j], 0, temp[j], 0, map.length);
-		}
-
 		for (int i = 0; i<4; i++) {
+			
+			for(int j=0; j<n; j++) {
+				System.arraycopy(map[j], 0, temp[j], 0, map.length);
+			}
+			
 			move(i);
 			dfs(depth+1);
 
@@ -192,7 +193,7 @@ public class Main {
 			}
 		}
 		
-		dfs(1);
+		dfs(0);
 	
 		System.out.println(max);
 		
