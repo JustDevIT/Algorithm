@@ -18,7 +18,7 @@ public class Main {
 		System.setIn(new FileInputStream("C://Algorithm/workspace/Algorithm/BaekJooN/TestCase/Sample.txt"));
 		
 		Scanner  sc = new Scanner(System.in);
-		 
+		  
 		solve(); 
 	}
 	
