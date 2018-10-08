@@ -1,3 +1,4 @@
+package algorithm.basic;
 import java.io.FileInputStream;
 import java.util.LinkedList;
 import java.util.Queue;
