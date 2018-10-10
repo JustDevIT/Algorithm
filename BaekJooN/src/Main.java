@@ -1,7 +1,5 @@
 import java.io.FileInputStream;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Scanner;
 
 public class Main {
@@ -9,6 +7,7 @@ public class Main {
 	static int n;
 	static int m;
 	static int[][] map;
+	static int[][] visited;
 	static int[] X = {-1, 1, 0, 0};
 	static int[] Y = {0, 0, -1, 1};
 	static int max = 0;
@@ -16,51 +15,53 @@ public class Main {
 	static int _X = 0;
 	static int _Y = 1;
 	
-	static Queue<int[]> q;
-	
-	static void bfs() {
+	static void bfs(int i, int j) {
+			int min = Integer.MAX_VALUE;
+			int sum = map[i][j];
+			int block = 0;
 			
-			for(int i=1; i<=n; i++) {
-				for(int j=1; j<=m; j++) {
+			// 십자가 모양으로 찾는다.
+			for(int k=0; k<4; k++) {
+				
+				int ny = i + Y[k];  
+				int nx = j + X[k]; 
+				
+				
+				if(map[ny][nx] != -1) {
+					sum+=map[ny][nx];
 					
-					// 십자가 모양으로 찾는다.
-					int sum = map[i][j];
-
-					for(int k=0; k<4; k++) {
-						
-					}
+					min = Math.min(min, map[ny][nx]);
+					block++;
 				}
 			}
+			
+			if(block == 4) {
+				sum-=min;
+			}
+			
+			max = Math.max(sum, max);
 	}
 	
 	static void dfs(int sum, int c, int _x, int _y) {
 		
-		if(c > 4) {
-			if(max < sum) {
-				max = sum;
-			}
+		if(c == 4) {
+				max = Math.max(sum, max);
 			return;
 		}
 		
-		int[][] tmap = new int[n+2][m+2];
 		for(int k=0; k<4; k++) {
+			
 			int nx = _x + X[k];
 			int ny = _y + Y[k];
-			if(map[ny][nx] != -1 && map[ny][nx] !=-2) {
-				int idx = 0;
-				for(int t[] : map) {
-					System.arraycopy(t, 0, tmap[idx++], 0, m+2);
-				}
+			
+			if(map[ny][nx] != -1 && visited[ny][nx] != 1) {
 				
-				int num = map[_y][_x]; 
-				map[_y][_x] = -2;
+				visited[ny][nx] = 1;
 				
-				dfs(sum + num, c+1, nx, ny);
+				dfs(sum + map[ny][nx], c+1, nx, ny);
 				
-				idx = 0;
-				for(int t[] : tmap) {
-					System.arraycopy(t, 0, map[idx++], 0, m+2);
-				}
+				visited[ny][nx] = 0;
+				
 			}
 		}
 	}
@@ -69,10 +70,10 @@ public class Main {
 		// TODO Auto-generated method stub
 
 		//회사PC
-		System.setIn(new FileInputStream("D://Project/Algorithm/Algorithm/BaekJooN/TestCase/Sample.txt"));
+		//System.setIn(new FileInputStream("D://Project/Algorithm/Algorithm/BaekJooN/TestCase/Sample.txt"));
 		
 		//데스크탑
-		//System.setIn(new FileInputStream("C://Algorithm/workspace/Algorithm/BaekJooN/TestCase/Sample.txt"));
+		System.setIn(new FileInputStream("C://Algorithm/workspace/Algorithm/BaekJooN/TestCase/Sample.txt"));
 		
 		//노트북
 		//System.setIn(new FileInputStream("C://Algorithm/Test/Algorithm/BaekJooN/TestCase/Sample.txt"));
@@ -82,6 +83,7 @@ public class Main {
 		m = sc.nextInt();
 		
 		map = new int[n+2][m+2];
+		visited = new int[n+2][m+2];
 		
 		for(int t[] : map) {
 			Arrays.fill(t, -1);
@@ -95,16 +97,16 @@ public class Main {
 		
 		for(int i=1; i<=n; i++) {
 			for(int j=1; j<=m; j++) {
-				dfs(0, 1, j, i);
+				visited[i][j] = 1;
+				dfs(map[i][j], 1, j, i);
+				bfs(i, j);
+				visited[i][j] = 0;
+				
+				
 			}
 		}
 		
-		q = new LinkedList<int[]>();
 		
-		int[] tq = new int[2];
-		tq[_X] = 1;
-		tq[_Y] = 1;
-		q.add(tq);
 		
 		System.out.println(max);
 	}
