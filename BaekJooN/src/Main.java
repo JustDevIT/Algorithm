@@ -1,5 +1,7 @@
 import java.io.FileInputStream;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class Main {
@@ -11,8 +13,24 @@ public class Main {
 	static int[] Y = {0, 0, -1, 1};
 	static int max = 0;
 	
+	static int _X = 0;
+	static int _Y = 1;
+	
+	static Queue<int[]> q;
+	
 	static void bfs() {
-		
+			
+			for(int i=1; i<=n; i++) {
+				for(int j=1; j<=m; j++) {
+					
+					// 십자가 모양으로 찾는다.
+					int sum = map[i][j];
+
+					for(int k=0; k<4; k++) {
+						
+					}
+				}
+			}
 	}
 	
 	static void dfs(int sum, int c, int _x, int _y) {
@@ -81,8 +99,14 @@ public class Main {
 			}
 		}
 		
-		System.out.println(max);
+		q = new LinkedList<int[]>();
 		
+		int[] tq = new int[2];
+		tq[_X] = 1;
+		tq[_Y] = 1;
+		q.add(tq);
+		
+		System.out.println(max);
 	}
 }
 
