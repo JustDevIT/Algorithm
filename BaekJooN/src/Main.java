@@ -1,91 +1,101 @@
 import java.io.FileInputStream;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Scanner;
-import java.util.Vector;
-
-import javax.swing.text.html.HTMLDocument.Iterator;
 
 public class Main {
 	
 	static int n;
-	static int m;
-	static int s;
+	static int ret;
+
+	static int[][] map;
+	static int[] visited;
 	
-	static int[] dp;
+	static int SEQ = 0;
+	static int DATA = 1;
 	
-	static Queue<int[]> q;
+	static Queue<Integer> q = new PriorityQueue<Integer>();
 	
-	static int S = 0;
-	static int H = 1;
+	static Queue<Integer> dp = new PriorityQueue<Integer>();
 	
-	static void solve() {
+	static void dp(int _pos, int _sum) {
 		
-		for(int i=1; i<=m; i++) {
+		if(visited[_pos] == 1) {
 			
-			int[] selected = new int[2];
-			for(int[] t : q) {
-				if(t[S] + (i-1) == i) {
-					if(dp[i] < dp[i-1] + t[H]) {
-						dp[i] = dp[i-1] + t[H];
-						selected = t;
+			if(ret < _sum) {
+				ret = Math.max(ret, _sum);
+				dp.clear();
+				
+				for(int i=1; i<=n;i++) {
+					if(visited[i]==1) {
+						dp.add(i);
 					}
+					
 				}
 			}
 			
-			q.remove(selected);
+			return;
 		}
 		
+		visited[_pos] = 1;
+				
+		int nextSeq = map[_pos][SEQ];
+		
+		for(int i=1;i<=n;i++) {
+			if(visited[i] !=1 && map[i][DATA] == nextSeq) {
+				visited[i] = 1;
+				dp(map[i][SEQ], _sum + map[i][SEQ]);
+				visited[i] = 0;
+			}
+		}
 	}
-	
 	
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 
 		//회사PC
-		//System.setIn(new FileInputStream("D://Project/Algorithm/Algorithm/BaekJooN/TestCase/Sample.txt"));
+		System.setIn(new FileInputStream("D://Project/Algorithm/Algorithm/BaekJooN/TestCase/Sample.txt"));
 		
 		//데스크탑
-		System.setIn(new FileInputStream("C://Algorithm/workspace/Algorithm/BaekJooN/TestCase/Sample.txt"));
+		//System.setIn(new FileInputStream("C://Algorithm/workspace/Algorithm/BaekJooN/TestCase/Sample.txt"));
 		
 		//노트북
 		//System.setIn(new FileInputStream("C://Algorithm/Test/Algorithm/BaekJooN/TestCase/Sample.txt"));
+		
 		Scanner sc = new Scanner(System.in);
 		
 		n = sc.nextInt();
-		m = sc.nextInt();
-		s = sc.nextInt();
 		
-		//dp = new int[1000001];
-		dp = new int[10];
+		map = new int[n+1][2];
 		
-		Arrays.fill(dp, Integer.MIN_VALUE);
-		dp[0] = 0;
-				
-		q = new LinkedList<int[]>();
+		visited = new int[n+1];
 		
-		for(int i=0; i<s;i++) {
-			int[] t = new int[2];
+		for(int i = 1; i<=n; i++) {
+			map[i][SEQ] = i;
+			map[i][DATA] = sc.nextInt();
 			
-			t[S] = sc.nextInt();
-			t[H] = sc.nextInt();
-			
-			if(t[S] == 0 && t[H]>0) {
-				dp[0] += t[H];
-			}else {
-				q.add(t);
+			if(map[i][SEQ] == map[i][DATA]) {
+				q.add(map[i][DATA]);
 			}
+				
+		}
+
+		for(int i=1;i<=n;i++) {
+			dp(1, map[1][SEQ]);	
 		}
 		
-		solve();
-		
-		int ret=0;
-		for(int i=n; i<=m;i++) {
-			ret = Math.max(ret, dp[i]);
+		while(!q.isEmpty()) {
+			dp.add(q.poll());
 		}
 		
-		System.out.print(ret);
+		System.out.println(dp.size());
+		while(!dp.isEmpty()) {
+			System.out.println(dp.poll());
+		}
+		
 	}
 }
 
