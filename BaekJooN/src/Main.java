@@ -47,13 +47,10 @@ public class Main {
 			
 		 */
 		
+		
 		for(int i=1; i<c;i++) {
+			for()
 			
-			for(int j=1; j<c;j++) {
-				if(i== (i-1) + score[j]) {
-					dp[i] = Math.max(dp[i-1] + statis[j], dp[i]);
-				}
-			}
 			
 		}
 		
