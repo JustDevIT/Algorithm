@@ -1,57 +1,66 @@
 import java.io.FileInputStream;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.Scanner;
 
 public class Main {
-	
-	static int n;
-	static int ret;
 
-	static int[][] map;
+	static int n;
+	static int m;
+	
+	static int c;
+	
+	static int[] score;
+	static int[] statis;
+	
 	static int[] visited;
 	
-	static int SEQ = 0;
-	static int DATA = 1;
+	static int ret;
+	static int retScore;
 	
-	static Queue<Integer> q = new PriorityQueue<Integer>();
+	static int[] dp;
 	
-	static Queue<Integer> dp = new PriorityQueue<Integer>();
-	
-	static void dp(int _pos, int _sum) {
-		
-		if(visited[_pos] == 1) {
+
+	/*
+	static void dfs(int _idx, int _score, int _statis) {
+
+		if(_idx == c) {
 			
-			if(ret < _sum) {
-				ret = Math.max(ret, _sum);
-				dp.clear();
-				
-				for(int i=1; i<=n;i++) {
-					if(visited[i]==1) {
-						dp.add(i);
-					}
-					
-				}
+			if(_score>=n) {
+				ret = Math.max(ret, _statis);
 			}
 			
 			return;
 		}
 		
-		visited[_pos] = 1;
-				
-		int nextSeq = map[_pos][SEQ];
+		dfs(_idx+1, _score, _statis);
 		
-		for(int i=1;i<=n;i++) {
-			if(visited[i] !=1 && map[i][DATA] == nextSeq) {
-				visited[i] = 1;
-				dp(map[i][SEQ], _sum + map[i][SEQ]);
-				visited[i] = 0;
-			}
+		if(_score + score[_idx] <=m) {
+			dfs(_idx+1, _score + score[_idx], _statis+statis[_idx]);
 		}
+		
 	}
+	*/
+	
+	static void dp() {
+		
+		//1 2 3
+		/*
+			
+		 */
+		
+		for(int i=1; i<c;i++) {
+			
+			for(int j=1; j<c;j++) {
+				if(i== (i-1) + score[j]) {
+					dp[i] = Math.max(dp[i-1] + statis[j], dp[i]);
+				}
+			}
+			
+		}
+		
+	}
+	
+	
+	
 	
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
@@ -68,34 +77,31 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		
 		n = sc.nextInt();
+		m = sc.nextInt();
+		c = sc.nextInt();
 		
-		map = new int[n+1][2];
+		score = new int[c];
+		statis = new int[c];
 		
-		visited = new int[n+1];
+		dp = new int[c];
 		
-		for(int i = 1; i<=n; i++) {
-			map[i][SEQ] = i;
-			map[i][DATA] = sc.nextInt();
+		for(int i=0;i<c;i++) {
+			score[i] = sc.nextInt();
+			statis[i] = sc.nextInt();
 			
-			if(map[i][SEQ] == map[i][DATA]) {
-				q.add(map[i][DATA]);
+			if(score[i] == 0 && statis[i] > 0) {
+				dp[0] +=  statis[i];
 			}
-				
-		}
-
-		for(int i=1;i<=n;i++) {
-			dp(1, map[1][SEQ]);	
+			
 		}
 		
-		while(!q.isEmpty()) {
-			dp.add(q.poll());
-		}
+		//dfs(0, 0, 0);
 		
-		System.out.println(dp.size());
-		while(!dp.isEmpty()) {
-			System.out.println(dp.poll());
-		}
+		dp();
+		
+		System.out.println(ret);
 		
 	}
+	
 }
 
