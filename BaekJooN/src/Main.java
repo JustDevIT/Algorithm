@@ -2,10 +2,34 @@ import java.io.FileInputStream;
 import java.util.Scanner;
 
 public class Main {
-	static int[] w;
-	static int[] v;
-	static int[][] d;
 	
+	static int[][] dp;
+	
+	static int[] w;
+	static int[] p;
+	
+	static int n;
+	static int m;
+	
+	static void knapsack() {
+		
+		int capacity = 0;
+		for(int i=1;i<=n;i++) {
+			for(int j=1;j<=m;j++) {
+				capacity = j - w[i];
+				
+				if(w[i] <= j) {
+					dp[i][j] = Math.max(dp[i-1][j], p[i] + dp[i-1][capacity]);
+				}else {
+					dp[i][j] = dp[i-1][j]; 
+				}
+			}
+		}
+		
+		System.out.println(dp[n][m]);
+		
+	}
+
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 
@@ -13,40 +37,28 @@ public class Main {
 		//System.setIn(new FileInputStream("D://Project/Algorithm/Algorithm/BaekJooN/TestCase/Sample.txt"));
 		
 		//데스크탑
-		//System.setIn(new FileInputStream("C://Algorithm/workspace/Algorithm/BaekJooN/TestCase/Sample.txt"));
+		System.setIn(new FileInputStream("C://Algorithm/workspace/Algorithm/BaekJooN/TestCase/Sample.txt"));
 		
 		//노트북
-		System.setIn(new FileInputStream("C://Algorithm/Test/Algorithm/BaekJooN/TestCase/Sample.txt"));
+		//System.setIn(new FileInputStream("C://Algorithm/Test/Algorithm/BaekJooN/TestCase/Sample.txt"));
 		
 		Scanner sc = new Scanner(System.in);
 		
-		int N = sc.nextInt();
-		int K = sc.nextInt();
-		//int C = sc.nextInt();
+		n = sc.nextInt();
+		m = sc.nextInt();
 		
-        //N+10 을 해준 이유는 마지막날 + 5일일 때 배열 에러가 날 수 있으므로 넉넉히 잡아준다. 
-        w = new int[N+10];
-        v = new int[N+10];
-        d = new int[K+1][K+1];
-        
-        int max = 0;
-        for (int i = 1; i <= N; i++) {
-            w[i] = sc.nextInt();
-            v[i] = sc.nextInt();
-        }
-        
-        int free_space;
-        for (int i = 1; i <= N; i++) {
-            for(int j = 1; j <= K; j++) {
-                if(w[i] <= j){
-                    free_space = j-w[i];
-                    d[i][j] = Math.max(d[i-1][j], v[i]+d[i-1][free_space]);
-                }else{
-                    d[i][j] = d[i-1][j];
-                }
-            }
-        }
-        System.out.println(d[N][K]);
-    }
+		w = new int[n+1];
+		p = new int[n+1];
+		
+		
+		dp = new int[n+1][m+1];
+		
+		for(int i=1;i<=n;i++) {
+			w[i] = sc.nextInt();
+			p[i] = sc.nextInt();
+		}
+		
+		knapsack();
+	}
+	
 }
-
