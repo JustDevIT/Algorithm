@@ -1,64 +1,69 @@
 import java.io.FileInputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
 	
-	static int[][] dp;
+	static int n, m, k;
+	static int[][] ticket;
+	static int[][] cache;
 	
-	static int[] w;
-	static int[] p;
-	
-	static int n;
-	static int m;
-	
-	static void knapsack() {
+	static int Search(int idx, int visit) {
 		
-		int capacity = 0;
-		for(int i=1;i<=n;i++) {
-			for(int j=1;j<=m;j++) {
-				capacity = j - w[i];
-				
-				if(w[i] <= j) {
-					dp[i][j] = Math.max(dp[i-1][j], p[i] + dp[i-1][capacity]);
-				}else {
-					dp[i][j] = dp[i-1][j]; 
-				}
+		if(idx != n && visit == m) {
+			return Integer.MIN_VALUE;
+		}
+		if(idx==n) {
+			return 0;
+		}
+		
+		if(cache[idx][visit] != -1) {
+			return cache[idx][visit];
+		}
+		
+		for(int to = idx + 1; to <=n; to++) {
+			if(ticket[idx][to] > 0) {
+				cache[idx][visit]  = Math.max(cache[idx][visit], ticket[idx][to] + Search(to, visit + 1));
 			}
 		}
 		
-		System.out.println(dp[n][m]);
-		
+		return cache[idx][visit] ;
 	}
-
+	
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 
-		//회사PC
-		//System.setIn(new FileInputStream("D://Project/Algorithm/Algorithm/BaekJooN/TestCase/Sample.txt"));
-		
 		//데스크탑
 		System.setIn(new FileInputStream("C://Algorithm/workspace/Algorithm/BaekJooN/TestCase/Sample.txt"));
-		
-		//노트북
-		//System.setIn(new FileInputStream("C://Algorithm/Test/Algorithm/BaekJooN/TestCase/Sample.txt"));
-		
+
 		Scanner sc = new Scanner(System.in);
 		
 		n = sc.nextInt();
 		m = sc.nextInt();
+		k = sc.nextInt();
 		
-		w = new int[n+1];
-		p = new int[n+1];
+		ticket = new int[k+1][k+1];
+		cache = new int[k+1][k+1];
 		
 		
-		dp = new int[n+1][m+1];
-		
-		for(int i=1;i<=n;i++) {
-			w[i] = sc.nextInt();
-			p[i] = sc.nextInt();
+		for(int[] t : ticket) {
+			Arrays.fill(t, -1);
 		}
 		
-		knapsack();
+		for(int[] t : cache) {
+			Arrays.fill(t, -1);
+		}
+		
+		for(int i =0; i < k; i++) {
+			int city1, city2, taste;
+			
+			city1 = sc.nextInt();
+			city2 = sc.nextInt();
+			taste = sc.nextInt();
+			
+			ticket[city1][city2] = Math.max(ticket[city1][city2], taste);
+		}
+		
+		System.out.println(Search(1, 1));
 	}
-	
 }
